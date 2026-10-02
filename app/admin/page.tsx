@@ -1,0 +1,6 @@
+import {getChatGPTUser,chatGPTSignInPath} from '@/app/chatgpt-auth';
+import {adminUser,readContent} from '@/lib/cms-server';
+import {AdminPanel} from '@/components/admin-panel';
+export const dynamic='force-dynamic';
+export const metadata={title:'Admin — AMDV-016',robots:{index:false,follow:false}};
+export default async function AdminPage(){const signedIn=await getChatGPTUser();if(!signedIn)return <main className="admin-gate"><span className="brand">AMDV<span>—</span>016</span><p className="mono orange">ESTÚDIO / ACESSO RESTRITO</p><h1>Seu olhar.<br/>Seu controle.</h1><p>Entre com sua conta do ChatGPT para gerenciar o portfólio.</p><a className="admin-primary" href={chatGPTSignInPath('/admin')} target="_top">Entrar com ChatGPT</a><a href="/">Voltar ao portfólio</a></main>;if(!await adminUser())return <main className="admin-gate"><h1>Acesso restrito.</h1><p>Esta área está disponível apenas para a conta administradora da AMDV-016.</p><a href="/signout-with-chatgpt?return_to=%2Fadmin" target="_top">Trocar de conta</a><a href="/">Voltar ao portfólio</a></main>;try{return <AdminPanel initial={await readContent()}/>;}catch(e){console.error('admin load',e);return <main className="admin-gate"><h1>Não foi possível carregar.</h1><p>O conteúdo continua salvo. Tente novamente em instantes.</p><a className="admin-primary" href="/admin">Tentar novamente</a></main>;}}

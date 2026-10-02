@@ -1,0 +1,44 @@
+import {createRequire} from 'node:module';
+import {readFile,readdir} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const require=createRequire(import.meta.url);
+const {Miniflare,Log,LogLevel}=createRequire(require.resolve('wrangler/package.json'))('miniflare');
+const root=new URL('../dist/server/',import.meta.url).pathname;
+const paths=(await readdir(root,{recursive:true})).filter(p=>/\.m?js$/.test(p)&&p!=='index.js');
+const mf=new Miniflare({modulesRoot:root,modules:['index.js',...paths].map(path=>({type:'ESModule',path:root+path})),compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],r2Buckets:['BUCKET'],log:new Log(LogLevel.ERROR)});
+const origin='https://amdv-016-portfolio.ei-nattaliag.chatgpt.site';
+// Local worker simulation only: emulate the dispatcher-provided identity.
+const owner={'oai-authenticated-user-id':'local-test-owner','oai-authenticated-user-email':'ei.nattaliag@gmail.com'};
+const visitor={'oai-authenticated-user-id':'local-test-visitor','oai-authenticated-user-email':'visitor@example.com'};
+const request=(path,options={})=>mf.dispatchFetch(origin+path,options);
+try {
+ const db=await mf.getD1Database('DB');
+ const migration=await readFile(new URL('../drizzle/0000_sour_black_panther.sql',import.meta.url),'utf8');
+ for(const sql of migration.replaceAll('--> statement-breakpoint','').split(';').filter(s=>s.trim()))await db.prepare(sql).run();
+ assert.equal((await request('/api/admin/content')).status,403);
+ assert.equal((await request('/api/admin/content',{headers:visitor})).status,403);
+ const load=await request('/api/admin/content',{headers:owner});assert.equal(load.status,200);const state=await load.json();assert.equal(state.revision,0);assert.equal(state.content.projects.length,3);
+ const mutation={...owner,'Content-Type':'application/json','X-AMDV-Admin':'1','Origin':origin};
+ const save=(body,headers=mutation)=>request('/api/admin/content',{method:'PUT',headers,body:JSON.stringify(body)});
+ assert.equal((await save(state,{...mutation,...visitor})).status,403);
+ assert.equal((await save(state,{...mutation,Origin:'https://untrusted.example'})).status,403);
+ assert.equal((await save({...state,content:{...state.content,projects:[...state.content.projects,state.content.projects[0]]}})).status,400);
+ state.content.settings.heroQuote='CMS integration verified';
+ state.content.projects[0].published=false;
+ const saved=await save(state);assert.equal(saved.status,200);const snapshot=await saved.json();assert.equal(snapshot.revision,1);
+ assert.equal((await save(state)).status,409);
+ const readback=await (await request('/api/admin/content',{headers:owner})).json();assert.equal(readback.content.settings.heroQuote,'CMS integration verified');
+ const home=await request('/');assert.equal(home.status,200);const html=await home.text();assert.ok(html.includes('CMS integration verified'));assert.ok(!html.includes('href="/projetos/entre-luzes"'));
+ assert.equal((await request('/projetos/entre-luzes')).status,404);
+ const project=await request('/projetos/ritual');assert.equal(project.status,200);assert.ok((await project.text()).includes('O RITUAL'));
+ const admin=await request('/admin',{headers:owner});assert.equal(admin.status,200);assert.ok((await admin.text()).includes('Salvar alterações'));
+ const unauthorizedAdmin=await (await request('/admin',{headers:visitor})).text();assert.ok(unauthorizedAdmin.includes('Acesso restrito.'));assert.ok(!unauthorizedAdmin.includes('CMS integration verified'));
+ const data=new Uint8Array(await readFile(new URL('../public/images/bar.webp',import.meta.url)));
+ assert.equal((await request('/api/admin/upload',{method:'POST',headers:{...visitor,'X-AMDV-Admin':'1','Content-Type':'image/webp',Origin:origin},body:data})).status,403);
+ assert.equal((await request('/api/admin/upload',{method:'POST',headers:{...owner,'X-AMDV-Admin':'1','Content-Type':'image/svg+xml',Origin:origin},body:'<svg/>'})).status,415);
+ const upload=await request('/api/admin/upload',{method:'POST',headers:{...owner,'X-AMDV-Admin':'1','Content-Type':'image/webp',Origin:origin},body:data});assert.equal(upload.status,200);const asset=await upload.json();
+ const file=await request(asset.url);assert.equal(file.status,200);assert.equal(file.headers.get('Content-Type'),'image/webp');assert.deepEqual(new Uint8Array(await file.arrayBuffer()),data);
+ const partial=await request(asset.url,{headers:{Range:'bytes=0-3'}});assert.equal(partial.status,206);assert.equal((await partial.arrayBuffer()).byteLength,4);
+ assert.equal((await request(asset.url,{headers:{Range:'bytes=999999999-'}})).status,416);
+ console.log('CMS checks passed: authorization, CSRF, validation, durable save/read, revision conflicts, draft isolation, public project rendering, admin render, R2 upload/read/range.');
+}finally{await mf.dispose();}
