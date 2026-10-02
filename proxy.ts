@@ -1,0 +1,5 @@
+import {createServerClient} from '@supabase/ssr';
+import {NextResponse,type NextRequest} from 'next/server';
+import {authConfigured,publicSupabaseConfig} from '@/lib/supabase/config';
+export async function proxy(request:NextRequest){let response=NextResponse.next({request});response.headers.set('Cache-Control','private, no-store');if(!authConfigured())return response;const {url,key}=publicSupabaseConfig();const client=createServerClient(url,key,{cookieOptions:{httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',path:'/'},cookies:{getAll:()=>request.cookies.getAll(),setAll(items){items.forEach(({name,value})=>request.cookies.set(name,value));response=NextResponse.next({request});items.forEach(({name,value,options})=>response.cookies.set(name,value,options));response.headers.set('Cache-Control','private, no-store');}}});try{await client.auth.getClaims();}catch{/* The page/API verifies identity and fails closed. */}return response;}
+export const config={matcher:['/admin/:path*','/api/admin/:path*']};

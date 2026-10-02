@@ -1,13 +1,11 @@
-import {env} from 'cloudflare:workers';
-import {getChatGPTUser} from '@/app/chatgpt-auth';
+import 'server-only';
 import {defaultContent,contentSchema,type ContentSnapshot,type PortfolioContent} from './cms-model';
-// Verified owner account from the Site access policy. This is a server-side allowlist;
-// platform-authenticated site user IDs are stored as the durable audit identity.
-const ownerEmails = new Set(['ei.nattaliag@gmail.com']);
-export async function adminUser(){const user=await getChatGPTUser();return user&&ownerEmails.has(user.email.toLowerCase())?user:null;}
-export function database(){if(!env.DB)throw new Error('Database unavailable');return env.DB;}
-export function bucket(){if(!env.BUCKET)throw new Error('Storage unavailable');return env.BUCKET;}
-export async function readContent():Promise<ContentSnapshot>{const row=await database().prepare('SELECT content, revision, updated_at FROM portfolio_content WHERE id = ?').bind(1).first<{content:string;revision:number;updated_at:string}>();if(!row)return {content:structuredClone(defaultContent),revision:0,updatedAt:null};return {content:contentSchema.parse(JSON.parse(row.content)),revision:row.revision,updatedAt:row.updated_at};}
-export async function saveContent(content:PortfolioContent,revision:number,userId:string){const timestamp=new Date().toISOString();const json=JSON.stringify(content);const statement=revision===0?database().prepare('INSERT OR IGNORE INTO portfolio_content (id, content, revision, updated_at, updated_by) VALUES (?, ?, ?, ?, ?)').bind(1,json,1,timestamp,userId):database().prepare('UPDATE portfolio_content SET content = ?, revision = revision + 1, updated_at = ?, updated_by = ? WHERE id = ? AND revision = ?').bind(json,timestamp,userId,1,revision);const result=await statement.run();return result.meta.changes===1?{content,revision:revision+1,updatedAt:timestamp}:null;}
-export function validMutation(request:Request){const origin=request.headers.get('origin');return request.headers.get('x-amdv-admin')==='1' && (!origin || origin===new URL(request.url).origin || origin==='https://amdv-016-portfolio.ei-nattaliag.chatgpt.site');}
+import {authConfigured} from './supabase/config';
+import {authClient} from './supabase/server';
+import {serviceClient} from './supabase/service';
+import {isAllowedAdmin} from './security';
+export {validMutation} from './security';
+export async function adminUser(){if(!authConfigured()||!process.env.ADMIN_USER_ID)return null;try{const client=await authClient();const {data,error}=await client.auth.getUser();if(error||!isAllowedAdmin(data.user?.id,process.env.ADMIN_USER_ID))return null;return {userId:data.user!.id,email:data.user!.email||''};}catch{return null;}}
+export async function readContent():Promise<ContentSnapshot>{if(!process.env.NEXT_PUBLIC_SUPABASE_URL||!process.env.SUPABASE_SERVICE_ROLE_KEY)return {content:structuredClone(defaultContent),revision:0,updatedAt:null};const {data,error}=await serviceClient().from('amdv_portfolio_content').select('content, revision, updated_at').eq('id',1).maybeSingle();if(error)throw error;if(!data)return {content:structuredClone(defaultContent),revision:0,updatedAt:null};return {content:contentSchema.parse(data.content),revision:Number(data.revision),updatedAt:data.updated_at};}
+export async function saveContent(content:PortfolioContent,revision:number,userId:string){const timestamp=new Date().toISOString();const row={content,revision:revision+1,updated_at:timestamp,updated_by:userId};const db=serviceClient();const result=revision===0?await db.from('amdv_portfolio_content').insert({id:1,...row}).select('revision').maybeSingle():await db.from('amdv_portfolio_content').update(row).eq('id',1).eq('revision',revision).select('revision').maybeSingle();if(result.error){if(result.error.code==='23505')return null;throw result.error;}return result.data?{content,revision:revision+1,updatedAt:timestamp}:null;}
 export const noStore={'Cache-Control':'no-store, private'};
