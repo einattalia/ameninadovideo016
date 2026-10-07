@@ -54,6 +54,17 @@ Selecione Production e, se quiser testar previews com o mesmo banco, também Pre
 
 Acesse `https://SEU-DOMINIO/admin` e entre com o e-mail e a senha do usuário criado. Edite textos, projetos e mídias, salve e confira a página pública. Não há cadastro público. Para trocar a pessoa administradora, altere ADMIN_USER_ID e faça novo deploy. Para recuperar acesso, gerencie o usuário no painel do Supabase.
 
+O painel reúne as partes editáveis do site:
+
+| Aba | O que você pode alterar |
+| --- | --- |
+| Projetos | Criar, ordenar, editar, publicar ou deixar como rascunho; capa, vídeo principal, até 10 vídeos adicionais, até 20 fotos, descrição, créditos e categorias. |
+| Página inicial | Imagem de abertura, texto, showreel, links do menu e publicações em destaque. |
+| Sobre & clientes | Foto, título, história, frase de posicionamento e lista de clientes. |
+| Contato | Texto, WhatsApp, e-mail, Instagram e localização. |
+
+Cada projeto pode reunir vários vídeos e fotos na página própria. Antes de divulgar um rascunho, marque “Visível no portfólio” e salve.
+
 Uploads aceitam JPG, PNG, WebP, AVIF, MP4 e WebM de até 25 MiB cada. Os arquivos são enviados diretamente ao Supabase usando autorização temporária emitida pelo servidor. O bucket é público: use apenas mídia destinada ao portfólio. Para vídeos maiores, use uma URL de mídia compatível com o campo do projeto.
 
 ## Desenvolvimento local
