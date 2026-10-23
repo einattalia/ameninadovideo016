@@ -14,7 +14,7 @@ export function ScrollMotion() {
       const animations = new Set<Animation>();
       const revealed = new WeakSet<Element>();
       const targets = document.querySelectorAll<HTMLElement>(
-        '.section-meta, .heading-row, .work, .category-list a, .about-copy > *, .about blockquote, .clients > p, .client-line, .social h2, .social-images a, .contact h2, .contact-bottom, .contact-links, .project-description, .project-gallery img, .project-details, .other-projects a'
+        '.section-meta, .heading-row, .cinema-collection, .cinema-project-button, .cinema-project-copy, .about-copy > *, .about blockquote, .clients > p, .client-line, .social h2, .social-images a, .contact h2, .contact-bottom, .contact-links, .project-description, .project-gallery img, .project-details, .other-projects a'
       );
       const observer = new IntersectionObserver(entries => {
         for (const entry of entries) {
@@ -23,7 +23,7 @@ export function ScrollMotion() {
           const el = entry.target as HTMLElement;
           const isTitle = el.matches('.heading-row, .social h2, .contact h2, .about blockquote');
           const siblingIndex = Array.from(el.parentElement?.children || []).indexOf(el);
-          const delay = el.matches('.category-list a, .social-images a, .about-copy > *')
+          const delay = el.matches('.cinema-collection, .cinema-project-button, .social-images a, .about-copy > *')
             ? Math.min(siblingIndex * 55, 240) : 0;
           const animation = el.animate([
             { opacity: 0, transform: `translateY(${mobile ? 20 : isTitle ? 55 : 35}px)`, ...(isTitle ? {clipPath:'inset(0 0 100% 0)'} : {}) },
@@ -35,7 +35,7 @@ export function ScrollMotion() {
         }
       }, { threshold: .12, rootMargin: '0px 0px -25px 0px' });
       targets.forEach(el => observer.observe(el));
-      const images = Array.from(document.querySelectorAll<HTMLElement>('.reel-poster, .work-image, .category-visual, .about-image, .social-images a'));
+      const images = Array.from(document.querySelectorAll<HTMLElement>('.about-image, .social-images a'));
       const visibleImages = new Set<HTMLElement>();
       const imageObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => entry.isIntersecting ? visibleImages.add(entry.target as HTMLElement) : visibleImages.delete(entry.target as HTMLElement));
@@ -84,3 +84,4 @@ export function ScrollMotion() {
   }, []);
   return <div className="scroll-progress" ref={progress} aria-hidden="true" />;
 }
+
