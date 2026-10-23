@@ -32,7 +32,7 @@ export function SocialManagement(){
       <article className="management-team">
         <div className="management-card-label mono">QUEM FAZ ACONTECER</div>
         <div className="team-person">
-          <span className="team-initials" aria-hidden="true">{initials||'BL'}</span>
+          {settings.socialTeamImage?<img className="team-photo" src={settings.socialTeamImage} alt={settings.socialTeamImageAlt||`Foto de ${settings.socialTeamName}`} loading="lazy"/>:<span className="team-initials" aria-hidden="true">{initials||'BL'}</span>}
           <div><h3>{settings.socialTeamName}</h3><p className="mono">{settings.socialTeamRole}</p></div>
         </div>
         <p className="team-description">{settings.socialTeamBio}</p>
@@ -40,9 +40,12 @@ export function SocialManagement(){
       <article className="management-clients">
         <div className="management-card-label mono">CLIENTES ATUAIS</div>
         <p className="management-client-intro">Marcas que confiam a presença nas redes à nossa equipe.</p>
-        {clients.length?<ul className="management-client-list">{clients.map(client=><li key={client.id}>
-          {client.url?<a href={client.url} target="_blank" rel="noreferrer">{client.name||client.handle||'Cliente'} <span aria-hidden="true">↗</span></a>:<span>{client.name||client.handle||'Cliente'}</span>}
-          {client.handle&&<small className="mono">{client.handle}</small>}
+        {clients.length?<ul className="management-client-list">{clients.map(client=><li className={client.image?'has-image':''} key={client.id}>
+          {client.image&&<img className="management-client-avatar" src={client.image} alt={client.imageAlt||client.name||'Imagem do cliente'} loading="lazy"/>}
+          <div className="management-client-copy">
+            {client.url?<a href={client.url} target="_blank" rel="noreferrer">{client.name||client.handle||'Cliente'} <span aria-hidden="true">↗</span></a>:<span>{client.name||client.handle||'Cliente'}</span>}
+            {client.handle&&<small className="mono">{client.handle}</small>}
+          </div>
         </li>)}</ul>:<p className="management-empty mono">NOVOS CLIENTES EM BREVE</p>}
       </article>
     </div>
@@ -60,5 +63,3 @@ export function SocialManagement(){
     <a className="management-cta" href="#contato">VAMOS PLANEJAR SUA PRESENÇA DIGITAL <span aria-hidden="true">↗</span></a>
   </section>;
 }
-
-
