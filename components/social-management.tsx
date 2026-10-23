@@ -16,7 +16,7 @@ export function SocialManagement(){
   const initials=settings.socialTeamName.split(/\s+/).filter(Boolean).slice(0,2).map(name=>name[0]).join('').toUpperCase();
 
   return <section id="gestao-redes" className="section social-management">
-    <div className="section-meta mono"><span><i>04</i> / PRESENÇA DIGITAL</span><span>GESTÃO DE REDES SOCIAIS</span></div>
+    <div className="section-meta mono"><span><i>03</i> / PRESENÇA DIGITAL</span><span>GESTÃO DE REDES SOCIAIS</span></div>
     <div className="heading-row social-management-heading">
       <h2>{settings.socialManagementTitle}<span className="orange">.</span></h2>
       <p className="preline">{settings.socialManagementDescription}</p>
@@ -60,4 +60,5 @@ export function SocialManagement(){
     <a className="management-cta" href="#contato">VAMOS PLANEJAR SUA PRESENÇA DIGITAL <span aria-hidden="true">↗</span></a>
   </section>;
 }
+
 
