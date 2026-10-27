@@ -168,3 +168,18 @@
 /* Keep the complete logo visible and align the opening copy in one hero. */
 .hero{height:auto;min-height:100svh}.hero .hero-logo-heading{position:relative;left:50%;width:100vw;max-width:none;height:auto;aspect-ratio:auto;overflow:visible;margin:6px 0 8px -50vw;line-height:0;letter-spacing:0;font-size:0}.hero .hero-logo-heading img{display:block;width:100%;height:auto;max-height:none;object-fit:contain;object-position:center}.hero .signature{white-space:nowrap}.hero .hero-quote{width:28ch;max-width:40vw;white-space:normal;line-height:1.3}
 @media(max-width:600px){.hero{height:auto;min-height:100svh}.hero-bottom{align-items:flex-start;flex-direction:column;gap:8px}.hero .signature{font-size:12px;white-space:nowrap}.hero .hero-quote{width:min(100%,28ch);max-width:100%;font-size:14px;line-height:1.3}}
+
+
+/* Keep the brand mark clear and place the intro copy below its full outline. */
+.hero .hero-title{width:100%;margin-top:auto;margin-bottom:clamp(72px,12vh,112px)}
+.hero .hero-logo-heading{margin-top:0;margin-bottom:16px}
+.hero .hero-bottom{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px}
+.hero .signature{text-align:center}
+.hero .hero-quote{width:min(42ch,100%);max-width:none;margin:0;text-align:center;line-height:1.3}
+@media(max-width:600px){
+ .hero .hero-title{margin-bottom:clamp(58px,10vh,88px)}
+ .hero .hero-logo-heading{margin-bottom:12px}
+ .hero .hero-bottom{align-items:center;gap:7px}
+ .hero .signature{white-space:nowrap}
+ .hero .hero-quote{width:min(30ch,100%);max-width:100%;font-size:14px;text-align:center}
+}
