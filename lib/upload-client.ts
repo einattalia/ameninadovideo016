@@ -35,6 +35,7 @@ export async function uploadMedia(file: File) {
 
   if (!upload.path || !upload.token || !upload.bucket) throw new Error('Resposta de upload inválida.');
   const { url, key } = publicSupabaseConfig();
+  if (!url || !key) throw new Error('A configuração pública do armazenamento está incompleta. Confira as variáveis NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY na Vercel.');
   const client = createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
   });
