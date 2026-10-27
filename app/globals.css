@@ -223,3 +223,8 @@
  .hero-mobile-slogan{display:block;margin:9px 0 0;color:#df754b;font-size:clamp(10px,2.8vw,12px);font-weight:700;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
  .hero .hero-title{margin-bottom:clamp(96px,14vh,122px)}
 }
+
+@media(max-width:600px){
+ .cinematic-heading h2{font-size:clamp(34px,10vw,50px);white-space:nowrap}
+ .social-management-heading h2{font-size:clamp(34px,9vw,52px);max-width:none;white-space:nowrap}
+}
