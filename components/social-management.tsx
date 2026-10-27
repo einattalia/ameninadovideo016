@@ -44,7 +44,7 @@ export function SocialManagement(){
           {client.image&&<img className="management-client-avatar" src={client.image} alt={client.imageAlt||client.name||'Imagem do cliente'} loading="lazy"/>}
           <div className="management-client-copy">
             {client.url?<a href={client.url} target="_blank" rel="noreferrer">{client.name||client.handle||'Cliente'} <span aria-hidden="true"></span></a>:<span>{client.name||client.handle||'Cliente'}</span>}
-            {client.handle&&<small className="mono">{client.handle}</small>}
+            {client.handle&&<small className="mono">{client.handle}</small>}{client.description&&<p className="management-client-description">{client.description}</p>}{client.website&&<a className="management-client-website" href={client.website} target="_blank" rel="noreferrer">VISITAR SITE</a>}
           </div>
         </li>)}</ul>:<p className="management-empty mono">NOVOS CLIENTES EM BREVE</p>}
       </article>
