@@ -183,3 +183,7 @@
  .hero .signature{white-space:nowrap}
  .hero .hero-quote{width:min(30ch,100%);max-width:100%;font-size:14px;text-align:center}
 }
+
+/* Let the full logo image define its own height so the copy cannot overlay it. */
+.hero .hero-logo-heading{max-height:none}
+.hero .hero-logo-heading img{height:auto;max-height:none}
