@@ -139,3 +139,19 @@
 .management-client-description{color:#b8b4b0;font-size:13px;line-height:1.55}
 .management-client-website{align-self:flex-start;margin-top:2px;color:#df754b;font-size:9px;letter-spacing:.1em}
 .management-client-website:hover{text-decoration:underline;color:#efede8}
+
+.management-client-open{display:flex;width:100%;flex-direction:column;align-items:flex-start;gap:8px;text-align:left;color:#f1efec}
+.management-client-open strong{font-size:18px;font-weight:500}
+.management-client-open small{color:#a7a19a;font-size:10px}
+.management-client-open>span{color:#df754b;font-size:9px;letter-spacing:.1em}
+.management-client-open:hover strong{color:#df754b}
+.client-dialog-content{max-width:560px;padding:30px;background:#171717;color:#f1efec;border:1px solid #45413e}
+.client-dialog-image{width:72px;height:72px;object-fit:cover;border-radius:50%;border:1px solid #5a514b}
+.client-dialog-header{gap:10px}
+.client-dialog-header h2{margin:0;font-size:clamp(28px,6vw,42px);letter-spacing:-.05em}
+.client-dialog-header [data-slot=dialog-description]{color:#aaa;font-size:11px}
+.client-dialog-description{color:#c6c2bd;font-size:16px;line-height:1.65}
+.client-dialog-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.client-dialog-link{display:inline-flex;align-items:center;min-height:42px;padding:0 14px;border:1px solid #df754b;color:#df754b;font-size:10px;letter-spacing:.1em}
+.client-dialog-link:hover{background:#df754b;color:#111}
+@media(max-width:650px){.client-dialog-content{padding:24px 20px}.client-dialog-description{font-size:15px}}
