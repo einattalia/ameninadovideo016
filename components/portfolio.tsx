@@ -5,7 +5,7 @@ import {motion,useReducedMotion} from 'framer-motion';
 import {Menu,Play} from 'lucide-react';
 import {workCollections} from '@/lib/portfolio';
 import {usePortfolio} from '@/components/portfolio-context';
-import {VideoPlayer} from '@/components/video-player';
+import {VideoPlayer,VideoPreview} from '@/components/video-player';
 
 export function Header(){const {settings}=usePortfolio();const instagram=settings.instagram;const [open,setOpen]=useState(false);return <header><Link href="/" className="brand" aria-label="AMDV-016 — A Menina do Vídeo"><img className="brand-logo" src="/images/amdv-016-claro.png" alt="" /><small>A MENINA DO VÍDEO</small></Link><nav aria-label="Navegação principal" className={open?'nav open':'nav'}>{[{label:settings.menuWorks,id:'trabalhos'},{label:settings.menuSocial,id:'gestao-redes'},{label:settings.menuAbout,id:'sobre'},{label:settings.menuContact,id:'contato'}].map(x=><a key={x.id} href={'/#'+x.id} onClick={()=>setOpen(false)}>{x.label}</a>)}</nav><div className="header-social"><a className="instagram-link" href={instagram} target="_blank" rel="noreferrer">{settings.instagramLabel}</a>{settings.whatsapp&&<a className="whatsapp-link" href={"https://wa.me/"+settings.whatsapp} target="_blank" rel="noreferrer">WHATSAPP</a>}</div><button className="menu" aria-label="Abrir navegação" aria-expanded={open} onClick={()=>setOpen(!open)}><Menu/></button></header>}
 
