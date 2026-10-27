@@ -164,3 +164,7 @@
 /* Full-bleed responsive hero logo. */
 .hero .hero-logo-heading{position:relative;left:50%;width:110vw;max-width:none;height:auto;aspect-ratio:8/1;overflow:hidden;margin:6px 0 8px -55vw;line-height:0;letter-spacing:0;font-size:0}.hero .hero-logo-heading img{display:block;width:100%;height:100%;max-height:none;object-fit:cover;object-position:center 44%}
 @media(max-width:600px){.hero .hero-logo-heading{width:110vw;margin-left:-55vw;aspect-ratio:8/1}.hero .hero-logo-heading img{max-height:none}}
+
+/* Keep the complete logo visible and align the opening copy in one hero. */
+.hero{height:auto;min-height:100svh}.hero .hero-logo-heading{position:relative;left:50%;width:100vw;max-width:none;height:auto;aspect-ratio:auto;overflow:visible;margin:6px 0 8px -50vw;line-height:0;letter-spacing:0;font-size:0}.hero .hero-logo-heading img{display:block;width:100%;height:auto;max-height:none;object-fit:contain;object-position:center}.hero .signature{white-space:nowrap}.hero .hero-quote{width:28ch;max-width:40vw;white-space:normal;line-height:1.3}
+@media(max-width:600px){.hero{height:auto;min-height:100svh}.hero-bottom{align-items:flex-start;flex-direction:column;gap:8px}.hero .signature{font-size:12px;white-space:nowrap}.hero .hero-quote{width:min(100%,28ch);max-width:100%;font-size:14px;line-height:1.3}}
