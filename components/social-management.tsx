@@ -15,11 +15,15 @@ export function SocialManagement(){
   const clients=settings.socialClients.filter(client=>client.published);
   const testimonials=settings.socialTestimonials.filter(testimonial=>testimonial.published);
   const initials=settings.socialTeamName.split(/\s+/).filter(Boolean).slice(0,2).map(name=>name[0]).join('').toUpperCase();
+  const titleWords=settings.socialManagementTitle.trim().replace(/[.!?]+$/,'').split(/\s+/).filter(Boolean);
+  const titleBreak=Math.max(1,titleWords.length-1);
+  const titleLineOne=titleWords.slice(0,titleBreak).join(' ');
+  const titleLineTwo=titleWords.slice(titleBreak).join(' ');
 
   return <section id="gestao-redes" className="section social-management">
     <div className="section-meta mono"><span><i>03</i> / PRESENÇA DIGITAL</span><span>GESTÃO DE REDES<br/>SOCIAIS</span></div>
     <div className="heading-row social-management-heading">
-      <h2>{settings.socialManagementTitle}<span className="orange">.</span></h2>
+      <h2>{titleLineOne}<br/>{titleLineTwo}<span className="orange">.</span></h2>
       <p className="preline">{settings.socialManagementDescription}</p>
     </div>
     <div className="management-steps">
