@@ -43,7 +43,7 @@ export function SocialManagement(){
         {clients.length?<ul className="management-client-list">{clients.map(client=><li className={client.image?'has-image':''} key={client.id}>
           {client.image&&<img className="management-client-avatar" src={client.image} alt={client.imageAlt||client.name||'Imagem do cliente'} loading="lazy"/>}
           <div className="management-client-copy">
-            {client.url?<a href={client.url} target="_blank" rel="noreferrer">{client.name||client.handle||'Cliente'} <span aria-hidden="true">↗</span></a>:<span>{client.name||client.handle||'Cliente'}</span>}
+            {client.url?<a href={client.url} target="_blank" rel="noreferrer">{client.name||client.handle||'Cliente'} <span aria-hidden="true"></span></a>:<span>{client.name||client.handle||'Cliente'}</span>}
             {client.handle&&<small className="mono">{client.handle}</small>}
           </div>
         </li>)}</ul>:<p className="management-empty mono">NOVOS CLIENTES EM BREVE</p>}
@@ -60,6 +60,6 @@ export function SocialManagement(){
         {testimonial.client&&<figcaption className="mono">{testimonial.client}</figcaption>}
       </figure>)}</div>:<p className="testimonial-empty">Um espaço para compartilhar as experiências de quem já trabalhou com a gente.</p>}
     </div>
-    <a className="management-cta" href="#contato">VAMOS PLANEJAR SUA PRESENÇA DIGITAL <span aria-hidden="true">↗</span></a>
+    <a className="management-cta" href="#contato">VAMOS PLANEJAR SUA PRESENÇA DIGITAL <span aria-hidden="true"></span></a>
   </section>;
 }
