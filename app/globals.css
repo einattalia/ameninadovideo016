@@ -27,7 +27,7 @@
 
 
 .social-management{background:#101010}
-.social-management-heading{align-items:end;gap:4vw}
+.social-management-heading{align-items:flex-start;gap:4vw}
 .social-management-heading h2{max-width:9ch;font-size:clamp(52px,8vw,125px);line-height:.92;letter-spacing:-.075em;text-transform:uppercase}
 .social-management-heading p{max-width:560px;font-size:clamp(17px,1.8vw,23px);line-height:1.55;color:#bcb8b3}
 .management-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:55px;border-top:1px solid #444;border-bottom:1px solid #444}
