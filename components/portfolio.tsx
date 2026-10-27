@@ -44,7 +44,7 @@ export function Works(){
     </div>
     {activeProject&&<div className="cinema-project-caption">
      <div className="cinema-project-title"><span className="mono orange">{activeProject.clientInstagram?<a className="cinema-client-link" href={activeProject.clientInstagram} target="_blank" rel="noreferrer" aria-label={'Instagram de '+activeProject.client}>{activeProject.client||'AMDV-016'}</a>:activeProject.client||'AMDV-016'} · {activeProject.year}</span><h3>{activeProject.name}</h3></div>
-     <div className="cinema-project-copy"><p>{activeProject.description}</p>{activeProject.credits&&<span className="mono">{activeProject.credits}</span>}<Link href={'/projetos/'+activeProject.slug}>VER PROJETO </Link></div>
+     <div className="cinema-project-copy">{activeProject.clientDescription&&<div className="client-work-summary"><span className="mono">O QUE FIZEMOS</span><p>{activeProject.clientDescription}</p></div>}<p>{activeProject.description}</p>{activeProject.credits&&<span className="mono">{activeProject.credits}</span>}{activeProject.clientWebsite&&<a className="client-website-link" href={activeProject.clientWebsite} target="_blank" rel="noreferrer">VISITAR SITE</a>}<Link href={'/projetos/'+activeProject.slug}>VER PROJETO </Link></div>
     </div>}
    </div>
    <aside className="cinema-index" aria-label={'Filmes da sessão '+collection}>
