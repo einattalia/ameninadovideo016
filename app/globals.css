@@ -135,3 +135,7 @@
 .client-project-info>div{max-width:680px}
 .client-project-info p{margin-top:10px;color:#c6c2bd;font-size:17px;line-height:1.6}
 @media(max-width:650px){.client-project-info{align-items:flex-start;flex-direction:column;gap:17px}.client-project-info p{font-size:15px}}
+
+.management-client-description{color:#b8b4b0;font-size:13px;line-height:1.55}
+.management-client-website{align-self:flex-start;margin-top:2px;color:#df754b;font-size:9px;letter-spacing:.1em}
+.management-client-website:hover{text-decoration:underline;color:#efede8}
