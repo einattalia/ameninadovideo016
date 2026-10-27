@@ -213,3 +213,13 @@
 .portfolio-category-empty{padding:50px 0;color:#aaa}
 @media(max-width:800px){.portfolio-folds{grid-template-columns:1fr 1fr}.portfolio-category-projects{gap:50px}}
 @media(max-width:600px){.portfolio-folds{grid-template-columns:1fr;gap:14px}.portfolio-fold-media{aspect-ratio:16/10}.portfolio-fold-copy{padding:15px}.portfolio-category-project-heading{display:block}.portfolio-category-project-heading p{margin-top:14px}.portfolio-category-videos{grid-template-columns:1fr}}
+
+
+.hero-mobile-slogan{display:none}
+@media(max-width:600px){
+ .hero-top{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:3px;width:100%;padding-bottom:9px;border-bottom:1px solid #ffffff70;font-size:clamp(8px,2.1vw,9px);line-height:1.4}
+ .hero-top span{white-space:nowrap}
+ .hero .hero-label{display:none}
+ .hero-mobile-slogan{display:block;margin:9px 0 0;color:#df754b;font-size:clamp(10px,2.8vw,12px);font-weight:700;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+ .hero .hero-title{margin-bottom:clamp(96px,14vh,122px)}
+}
