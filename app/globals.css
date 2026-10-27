@@ -190,3 +190,26 @@
 
 /* Video-first project pages without photo cards. */
 .project-video-placeholder{aspect-ratio:16/9;min-height:240px;background:#141414;border:1px solid #333;display:grid;place-items:center;text-align:center;color:#c8c3bc}.project-video-placeholder .mono{color:#df754b}.other-projects .project-video-placeholder{min-height:0;width:100%;margin:0 0 8px}
+
+
+/* Video preview folders on the portfolio home. */
+.portfolio-folds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.portfolio-fold-card{display:block;min-width:0;border:1px solid #383838;background:#121212;transition:border-color .3s,transform .3s}
+.portfolio-fold-card:hover{border-color:#df754b;transform:translateY(-4px)}
+.portfolio-fold-media{position:relative;aspect-ratio:4/5;overflow:hidden;background:#181818}
+.portfolio-video-preview,.portfolio-fold-empty{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.portfolio-video-preview{pointer-events:none}
+.portfolio-fold-empty{display:grid;place-items:center;color:#df754b;background:linear-gradient(145deg,#1b1b1b,#0d0d0d)}
+.portfolio-fold-index{position:absolute;top:16px;left:16px;z-index:1;padding:5px 8px;background:#080808b8}
+.portfolio-fold-copy{display:flex;justify-content:space-between;align-items:end;gap:12px;padding:18px}
+.portfolio-fold-copy h3{font-size:clamp(22px,2.6vw,38px);letter-spacing:-.04em;margin-top:5px}
+.portfolio-fold-copy>span{color:#df754b;white-space:nowrap}
+.portfolio-category-projects{display:grid;gap:70px;margin-top:50px}
+.portfolio-category-project{border-top:1px solid #393939;padding-top:22px}
+.portfolio-category-project-heading{display:flex;justify-content:space-between;gap:25px;align-items:start;margin-bottom:24px}
+.portfolio-category-project-heading h2{font-size:clamp(28px,4vw,58px);margin-top:8px}
+.portfolio-category-project-heading p{max-width:420px;color:#aaa}
+.portfolio-category-videos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.portfolio-category-empty{padding:50px 0;color:#aaa}
+@media(max-width:800px){.portfolio-folds{grid-template-columns:1fr 1fr}.portfolio-category-projects{gap:50px}}
+@media(max-width:600px){.portfolio-folds{grid-template-columns:1fr;gap:14px}.portfolio-fold-media{aspect-ratio:16/10}.portfolio-fold-copy{padding:15px}.portfolio-category-project-heading{display:block}.portfolio-category-project-heading p{margin-top:14px}.portfolio-category-videos{grid-template-columns:1fr}}

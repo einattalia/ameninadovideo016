@@ -15,57 +15,19 @@ export function Hero(){const {settings}=usePortfolio();const reduced=useReducedM
 
 export function Works(){
  const {projects}=usePortfolio();
- const featuredCount=(item:string)=>projects.filter(project=>project.tags.includes(item)).reduce((total,project)=>{
-  const available=[project.video,...project.videos].filter(Boolean);
-  return total+project.featuredVideos.filter(video=>available.includes(video)).length;
- },0);
- const firstCollection=workCollections.find(item=>featuredCount(item)>0)||workCollections[0];
- const [collection,setCollection]=useState(firstCollection);
- const [selectedVideoKey,setSelectedVideoKey]=useState('');
- const collectionProjects=projects.filter(project=>project.tags.includes(collection));
- const entries=collectionProjects.flatMap(project=>[project.video,...project.videos].flatMap((video,index)=>video&&project.featuredVideos.includes(video)?[{key:project.slug+':'+index,project,video,index}]:[]));
- const activeEntry=entries.find(entry=>entry.key===selectedVideoKey)||entries[0];
- const activeProject=activeEntry?.project;
- const activeVideo=activeEntry?.video||'';
- const activeIndex=activeEntry?entries.findIndex(entry=>entry.key===activeEntry.key)+1:0;
- const independentEvent=Boolean(activeProject&&(activeProject.category==='EVENTOS'||activeProject.tags.includes('EVENTOS')));
- function selectCollection(next:string){setCollection(next);setSelectedVideoKey('');}
-
+ const categoryPaths:Record<string,string>={'MÚSICA':'musica','EVENTOS':'eventos','DIVULGAÇÃO':'divulgacao'};
  return <section id="trabalhos" className="section cinematic-portfolio">
-  <div className="section-meta mono"><span><i>02</i> / FILMES EM CENA</span><span>UMA SELEÇÃO DE HISTÓRIAS</span></div>
-  <div className="heading-row cinematic-heading"><div><p className="mono orange">SELEÇÃO AMDV-016</p><h2>TRÊS FORMAS<br/>DE CONTAR<span className="orange">.</span></h2></div><p>Escolha uma sessão.<br/>O próximo quadro é seu.</p></div>
-  <div className="cinema-collections" aria-label="Escolha uma sessão">
-   {workCollections.map((item,index)=>{
-    const count=featuredCount(item);
-    return <button key={item} type="button" aria-pressed={collection===item} className={'cinema-collection '+(collection===item?'is-active':'')} onClick={()=>selectCollection(item)}>
-     <span className="mono">0{index+1}</span><span>{item}</span><span className="cinema-collection-count mono">{String(count).padStart(2,'0')} VÍDEOS</span>
-    </button>;
+  <div className="section-meta mono"><span><i>02</i> / FILMES EM CENA</span><span>ESCOLHA UMA PASTA</span></div>
+  <div className="heading-row cinematic-heading"><div><p className="mono orange">SELEÇÃO AMDV-016</p><h2>HISTÓRIAS<br/>EM MOVIMENTO<span className="orange">.</span></h2></div><p>Entre em uma sessão<br/>e descubra os projetos.</p></div>
+  <div className="portfolio-folds">
+   {workCollections.map((category,index)=>{
+    const categoryProjects=projects.filter(project=>project.tags.includes(category));
+    const previewVideo=categoryProjects.flatMap(project=>[project.video,...project.videos].filter(video=>video&&project.featuredVideos.includes(video)))[0];
+    return <Link key={category} href={'/trabalhos/'+categoryPaths[category]} className="portfolio-fold-card">
+     <div className="portfolio-fold-media">{previewVideo?<VideoPreview src={previewVideo} title={'Prévia de '+category}/>:<div className="portfolio-fold-empty"><span className="mono">VÍDEO EM CURADORIA</span></div>}<span className="portfolio-fold-index mono">0{index+1} / SESSÃO</span></div>
+     <div className="portfolio-fold-copy"><div><span className="mono orange">{String(categoryProjects.length).padStart(2,'0')} PROJETOS</span><h3>{category}</h3></div><span className="mono">ABRIR PASTA ↗</span></div>
+    </Link>;
    })}
-  </div>
-  <div className="cinema-work-layout">
-   <div className="cinema-feature">
-    <div className="cinema-screen" key={activeEntry?.key||collection}>
-     {activeEntry?<VideoPlayer src={activeVideo} title={activeProject?.name||'Vídeo AMDV-016'} autoplay={Boolean(activeProject?.autoplayVideo)}/>:<div className="cinema-empty"><span className="mono orange">ESCOLHA OS VÍDEOS DE DESTAQUE</span><p>Marque no painel os vídeos que quer exibir na página principal.</p><Link href="/admin">ORGANIZAR PROJETOS</Link></div>}
-     {activeEntry&&activeProject&&<div className="cinema-screen-labels"><span className="mono">{collection} / {String(activeIndex).padStart(2,'0')}</span>{!independentEvent&&(activeProject.clientInstagram?<a className="mono cinema-client-chip" href={activeProject.clientInstagram} target="_blank" rel="noreferrer" aria-label={'Instagram de '+activeProject.client}>{activeProject.demo?'ESTUDO VISUAL':activeProject.client||'AMDV-016'}</a>:<span className="mono">{activeProject.demo?'ESTUDO VISUAL':activeProject.client||'AMDV-016'}</span>)}<Link className="cinema-project-open" href={'/projetos/'+activeProject.slug} aria-label={'Abrir o projeto '+activeProject.name} data-cursor="VER">ABRIR</Link></div>}
-    </div>
-    {activeEntry&&activeProject&&<div className="cinema-project-caption">
-     <div className="cinema-project-title"><span className="mono orange">{!independentEvent&&<>{activeProject.clientInstagram?<a className="cinema-client-link" href={activeProject.clientInstagram} target="_blank" rel="noreferrer" aria-label={'Instagram de '+activeProject.client}>{activeProject.client||'AMDV-016'}</a>:activeProject.client||'AMDV-016'} · </>}{activeProject.year}</span><h3>{activeProject.name}</h3></div>
-     <div className="cinema-project-copy">{activeProject.clientDescription&&<div className="client-work-summary"><span className="mono">{independentEvent?'O QUE FOI FEITO':'O QUE FIZEMOS'}</span><p>{activeProject.clientDescription}</p></div>}<p>{activeProject.description}</p>{activeProject.credits&&<span className="mono">{activeProject.credits}</span>}{!independentEvent&&activeProject.clientWebsite&&<a className="client-website-link" href={activeProject.clientWebsite} target="_blank" rel="noreferrer">VISITAR SITE</a>}<Link href={'/projetos/'+activeProject.slug}>VER PROJETO </Link></div>
-    </div>}
-   </div>
-   <aside className="cinema-index" aria-label={'Vídeos em destaque da sessão '+collection}>
-    <div className="cinema-index-heading"><span className="mono">SESSÃO / {collection}</span><span className="mono">{String(entries.length).padStart(2,'0')} VÍDEOS</span></div>
-    {entries.length?<ol className="cinema-project-list">{entries.map((entry,index)=>{
-     const eventEntry=entry.project.category==='EVENTOS'||entry.project.tags.includes('EVENTOS');
-     const videoLabel=entry.index===0?'VÍDEO PRINCIPAL':'VÍDEO '+String(entry.index+1).padStart(2,'0');
-     return <li key={entry.key}>
-      <button type="button" className={'cinema-project-button '+(activeEntry?.key===entry.key?'is-active':'')} aria-pressed={activeEntry?.key===entry.key} onClick={()=>setSelectedVideoKey(entry.key)}>
-       <span className="mono cinema-project-number">{String(index+1).padStart(2,'0')}</span><span className="cinema-project-name">{entry.project.name}<small>{videoLabel} · {entry.project.year}</small></span>
-      </button>{!eventEntry&&entry.project.clientInstagram&&<a className="cinema-index-client" href={entry.project.clientInstagram} target="_blank" rel="noreferrer" aria-label={'Instagram de '+entry.project.client}>{entry.project.client||'INSTAGRAM'}</a>}
-     </li>;
-    })}</ol>:<p className="cinema-index-empty">Nenhum vídeo está marcado para destaque nesta sessão. Escolha os vídeos pelo painel.</p>}
-    <Link href="/admin" className="cinema-index-admin">ADICIONAR TRABALHO </Link>
-   </aside>
   </div>
  </section>;
 }
