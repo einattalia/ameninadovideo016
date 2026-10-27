@@ -155,3 +155,8 @@
 .client-dialog-link{display:inline-flex;align-items:center;min-height:42px;padding:0 14px;border:1px solid #df754b;color:#df754b;font-size:10px;letter-spacing:.1em}
 .client-dialog-link:hover{background:#df754b;color:#111}
 @media(max-width:650px){.client-dialog-content{padding:24px 20px}.client-dialog-description{font-size:15px}}
+
+/* AMDV-016 logo wordmark and first-frame entrance. */
+.brand{display:block;width:clamp(120px,10vw,145px);font-size:0;letter-spacing:0;line-height:0}.brand-logo{display:block;width:100%;height:auto;object-fit:contain}.brand small{display:block;margin-top:2px;font-size:9px;line-height:1.2;letter-spacing:1.5px}.hero-logo-heading{width:min(100%,1120px);height:auto;max-height:25svh;margin:6px auto 8px;line-height:0;letter-spacing:0;font-size:inherit}.hero-logo-heading img{display:block;width:100%;height:auto;max-height:25svh;object-fit:contain}.footer-brand{width:130px}
+@media(max-width:600px){header .brand{width:108px}.brand small{font-size:8px}.hero-logo-heading,.hero-logo-heading img{width:100%;max-height:21svh}.footer-brand{width:120px}}
+@media(prefers-reduced-motion:reduce){.hero-logo-heading{filter:none!important;transform:none!important}}
