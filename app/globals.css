@@ -187,3 +187,6 @@
 /* Let the full logo image define its own height so the copy cannot overlay it. */
 .hero .hero-logo-heading{max-height:none}
 .hero .hero-logo-heading img{height:auto;max-height:none}
+
+/* Video-first project pages without photo cards. */
+.project-video-placeholder{aspect-ratio:16/9;min-height:240px;background:#141414;border:1px solid #333;display:grid;place-items:center;text-align:center;color:#c8c3bc}.project-video-placeholder .mono{color:#df754b}.other-projects .project-video-placeholder{min-height:0;width:100%;margin:0 0 8px}
