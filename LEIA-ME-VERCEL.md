@@ -65,7 +65,36 @@ O painel reúne as partes editáveis do site:
 
 Cada projeto pode reunir vários vídeos e fotos na página própria. Antes de divulgar um rascunho, marque “Visível no portfólio” e salve.
 
-Uploads aceitam JPG, PNG, WebP, AVIF, MP4 e WebM de até 25 MiB cada. Os arquivos são enviados diretamente ao Supabase usando autorização temporária emitida pelo servidor. O bucket é público: use apenas mídia destinada ao portfólio. Para vídeos maiores, use uma URL de mídia compatível com o campo do projeto.
+Uploads aceitam imagens JPG, PNG, WebP e AVIF de até 25 MiB e vídeos MP4/WebM de até 500 MiB. As imagens e vídeos de até 50 MiB continuam usando o Supabase. Com o R2 configurado, os vídeos são enviados diretamente do navegador ao Cloudflare por uma URL temporária; o arquivo não passa pela Vercel.
+
+### Habilitar vídeos de até 500 MiB no Cloudflare R2
+
+1. Crie ou selecione um bucket R2 para as mídias do portfólio e gere credenciais S3 com permissão de leitura e gravação nesse bucket.
+2. Conecte ao bucket um domínio público de mídia, por exemplo `media.ameninadovideo016.com.br`. Mantenha o domínio raiz e `www` ligados ao site na Vercel.
+3. Em **R2 > bucket > Settings > CORS Policy**, configure esta política, substituindo as origens se o site usar outro domínio:
+
+```json
+{
+  "rules": [
+    {
+      "allowed": {
+        "origins": [
+          "https://ameninadovideo016.com.br",
+          "https://www.ameninadovideo016.com.br"
+        ],
+        "methods": ["GET", "HEAD", "PUT"],
+        "headers": ["Content-Type"]
+      },
+      "maxAgeSeconds": 3600
+    }
+  ]
+}
+```
+
+4. Cadastre na Vercel, somente em variáveis de servidor, as variáveis `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME` e `R2_PUBLIC_URL`. Use em `R2_PUBLIC_URL` o endereço HTTPS público do bucket, sem caminho adicional.
+5. Depois de salvar as variáveis, faça um novo deploy. Nunca coloque as credenciais R2 em variáveis `NEXT_PUBLIC_`, no GitHub ou em mensagens.
+
+O navegador usa uma URL assinada de curta duração para enviar cada vídeo pelo endpoint S3 do R2; o endereço público configurado no bucket é usado para exibir os vídeos no portfólio. O envio é um único `PUT`: se a conexão cair durante um vídeo grande, será preciso enviar esse arquivo novamente.
 
 ## Desenvolvimento local
 
