@@ -6,14 +6,13 @@ import { uploadTypes, validUpload } from '@/lib/security';
 
 export const dynamic = 'force-dynamic';
 
-const MAX_SUPABASE_VIDEO_SIZE = 50 * 1024 * 1024;
-
 function r2Config() {
   const accountId = process.env.R2_ACCOUNT_ID?.trim();
   const accessKeyId = process.env.R2_ACCESS_KEY_ID?.trim();
   const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY?.trim();
   const bucket = process.env.R2_BUCKET_NAME?.trim();
-  const publicUrl = process.env.R2_PUBLIC_URL?.trim().replace(/\/+$/, '');
+  const rawPublicUrl = process.env.R2_PUBLIC_URL;
+  const publicUrl = typeof rawPublicUrl === 'string' ? rawPublicUrl.trim().replace(/\/+$/, '') : '';
 
   if (!accountId || !accessKeyId || !secretAccessKey || !bucket || !publicUrl) return null;
 
@@ -74,14 +73,13 @@ export async function POST(request: Request) {
 
     if (type.startsWith('video/')) {
       const r2Upload = await createR2Upload(type, uploadTypes[type]);
-      if (r2Upload) return Response.json(r2Upload, { headers: noStore });
-
-      if (size > MAX_SUPABASE_VIDEO_SIZE) {
+      if (!r2Upload) {
         return Response.json(
-          { error: 'Vídeos acima de 50 MB precisam do R2. Configure as variáveis R2 na Vercel para enviar arquivos maiores.' },
+          { error: 'O Cloudflare R2 não está configurado corretamente neste deploy. Confira as variáveis R2 na Vercel e publique novamente.' },
           { status: 503, headers: noStore },
         );
       }
+      return Response.json(r2Upload, { headers: noStore });
     }
 
     const path = crypto.randomUUID() + '.' + uploadTypes[type];
