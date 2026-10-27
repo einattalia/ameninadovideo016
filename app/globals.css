@@ -125,3 +125,13 @@
 @media(max-width:650px){.team-photo{width:62px;height:62px;flex-basis:62px}}
 
 @media(max-width:650px){.management-client-avatar{width:68px;height:68px;flex-basis:68px}}
+
+.client-work-summary{padding:14px 16px;border-left:2px solid #df754b;background:#171717}
+.client-work-summary>span,.client-project-info .mono{display:block;color:#df754b;font-size:9px;letter-spacing:.12em}
+.client-work-summary>p{margin-top:8px;color:#e4e0dc;font-size:14px;line-height:1.6}
+.client-website-link{display:inline-flex;align-items:center;min-height:38px;padding:0 12px;border:1px solid #df754b;color:#df754b;font-size:10px;letter-spacing:.1em;transition:background .2s,color .2s}
+.client-website-link:hover{background:#df754b;color:#111}
+.client-project-info{display:flex;justify-content:space-between;align-items:end;gap:25px;margin:35px 0;padding:22px 0;border-top:1px solid #393939;border-bottom:1px solid #393939}
+.client-project-info>div{max-width:680px}
+.client-project-info p{margin-top:10px;color:#c6c2bd;font-size:17px;line-height:1.6}
+@media(max-width:650px){.client-project-info{align-items:flex-start;flex-direction:column;gap:17px}.client-project-info p{font-size:15px}}
