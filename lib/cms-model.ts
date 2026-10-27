@@ -8,7 +8,7 @@ export const projectSchema = z.object({
  image:mediaUrl, alt:text(300), description:text(3000), video:mediaUrl, videos:z.array(mediaUrl.refine(v=>!!v,'Adicione um vídeo ou retire este item da lista.')).max(10).default([]), autoplayVideo:z.boolean().default(false), gallery:z.array(z.object({url:mediaUrl.refine(v=>!!v,'Adicione a imagem ou retire este item da galeria.'),alt:text(300)})).max(20), details:text(4000), credits:text(1000), demo:z.boolean(),published:z.boolean()
 }).superRefine((p,c)=>{if(p.published&&!p.image)c.addIssue({code:'custom',path:['image'],message:'Adicione uma capa antes de publicar o projeto.'});});
 export const socialClientSchema = z.object({
- id:text(100).min(1),name:text(150),handle:text(100),url:mediaUrl,image:mediaUrl.default(''),imageAlt:text(300).default(''),published:z.boolean().default(false)
+ id:text(100).min(1),name:text(150),handle:text(100),url:mediaUrl,image:mediaUrl.default(''),imageAlt:text(300).default(''),description:text(2000).default(''),website:z.string().trim().max(500).refine(v=>!v||(()=>{try{const u=new URL(v);return ['http:','https:'].includes(u.protocol)&&!u.username&&!u.password;}catch{return false;}})(),'Informe um link de site válido.').default(''),published:z.boolean().default(false)
 }).superRefine((client,c)=>{if(client.published&&!client.name&&!client.handle)c.addIssue({code:'custom',path:['name'],message:'Informe o nome ou o perfil do cliente antes de mostrar no portfólio.'});});
 export const socialTestimonialSchema = z.object({
  id:text(100).min(1),client:text(150),quote:text(2000),published:z.boolean().default(false)
@@ -20,7 +20,7 @@ export const settingsSchema = z.object({
  menuWorks:text(60).min(1),menuSocial:text(60).min(1).default('GESTÃO DE REDES'),menuAbout:text(60).min(1),menuContact:text(60).min(1),
  socialManagementTitle:text(150).default('Gestão de redes sociais'),socialManagementDescription:text(1800).default('Cuidamos da presença da sua marca nas redes durante todo o período de gestão. Planejamos os conteúdos, organizamos o calendário, fazemos as postagens e acompanhamos os resultados para orientar os próximos passos.'),
  socialTeamName:text(100).default('Bruna Linhares'),socialTeamRole:text(100).default('Designer'),socialTeamBio:text(500).default('Designer que integra a equipe da AMDV-016.'),socialTeamImage:mediaUrl.default(''),socialTeamImageAlt:text(300).default(''),
- socialClients:z.array(socialClientSchema).max(20).default([{id:'cervejando-com-diego',name:'Cervejando com Diego',handle:'@cervejandocomdiego',url:'https://www.instagram.com/cervejandocomdiego/',image:'',imageAlt:'',published:true}]),
+ socialClients:z.array(socialClientSchema).max(20).default([{id:'cervejando-com-diego',name:'Cervejando com Diego',handle:'@cervejandocomdiego',url:'https://www.instagram.com/cervejandocomdiego/',image:'',imageAlt:'',description:'',website:'',published:true}]),
  socialTestimonials:z.array(socialTestimonialSchema).max(20).default([]),
  clients:z.array(text(150).min(1)).max(40), socialItems:z.array(z.object({image:mediaUrl.refine(v=>!!v,'Adicione uma imagem à publicação.'),url:mediaUrl,alt:text(300)})).max(6)
 });
