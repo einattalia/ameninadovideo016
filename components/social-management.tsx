@@ -1,6 +1,7 @@
 'use client';
 
 import {usePortfolio} from '@/components/portfolio-context';
+import {Dialog,DialogContent,DialogDescription,DialogHeader,DialogTitle,DialogTrigger} from '@/components/ui/dialog';
 
 const managementSteps = [
   {number:'01',title:'Planejamento',description:'Definimos os temas e objetivos da comunicação.'},
@@ -43,8 +44,22 @@ export function SocialManagement(){
         {clients.length?<ul className="management-client-list">{clients.map(client=><li className={client.image?'has-image':''} key={client.id}>
           {client.image&&<img className="management-client-avatar" src={client.image} alt={client.imageAlt||client.name||'Imagem do cliente'} loading="lazy"/>}
           <div className="management-client-copy">
-            {client.url?<a href={client.url} target="_blank" rel="noreferrer">{client.name||client.handle||'Cliente'} <span aria-hidden="true"></span></a>:<span>{client.name||client.handle||'Cliente'}</span>}
-            {client.handle&&<small className="mono">{client.handle}</small>}{client.description&&<p className="management-client-description">{client.description}</p>}{client.website&&<a className="management-client-website" href={client.website} target="_blank" rel="noreferrer">VISITAR SITE</a>}
+            <Dialog>
+              <DialogTrigger asChild><button type="button" className="management-client-open"><strong>{client.name||client.handle||'Cliente'}</strong>{client.handle&&<small className="mono">{client.handle}</small>}<span className="mono">VER TRABALHO</span></button></DialogTrigger>
+              <DialogContent className="client-dialog-content">
+                {client.image&&<img className="client-dialog-image" src={client.image} alt={client.imageAlt||client.name||'Imagem do cliente'}/>}
+                <DialogHeader className="client-dialog-header">
+                  <span className="management-card-label mono">CLIENTE / PROJETO</span>
+                  <DialogTitle>{client.name||client.handle||'Cliente'}</DialogTitle>
+                  {client.handle&&<DialogDescription className="mono">{client.handle}</DialogDescription>}
+                </DialogHeader>
+                {client.description&&<p className="client-dialog-description preline">{client.description}</p>}
+                <div className="client-dialog-actions">
+                  {client.url&&<a className="client-dialog-link" href={client.url} target="_blank" rel="noreferrer">INSTAGRAM</a>}
+                  {client.website&&<a className="client-dialog-link" href={client.website} target="_blank" rel="noreferrer">ACESSAR SITE</a>}
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </li>)}</ul>:<p className="management-empty mono">NOVOS CLIENTES EM BREVE</p>}
       </article>
