@@ -262,3 +262,5 @@
 .feedback-back{width:min(100%,760px);margin:0 auto;color:#bdb8b2}
 .admin-feedback-link{color:#999;margin-top:16px}
 @media(max-width:600px){.feedback-page{padding:28px 22px}.feedback-card{margin-top:65px}.feedback-card h1{font-size:clamp(40px,12vw,64px)}}
+
+.social-follow{display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid #393939;padding-top:24px;margin-top:50px}.social-follow p{font-size:11px;color:#999;letter-spacing:.08em}.social-follow-link{display:inline-flex;align-items:center;gap:18px;color:#f1efeb;border-bottom:1px solid #d96b40;padding:0 0 8px;font-size:clamp(16px,2vw,22px)}.social-follow-link span{color:#d96b40;font-size:1.3em}@media(max-width:600px){.social-follow{align-items:flex-start;flex-direction:column;gap:16px;margin-top:34px}}
