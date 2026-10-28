@@ -32,7 +32,7 @@ export default async function CategoryPage({params}:{params:Promise<{categoria:s
    const videos=[project.video,...project.videos].filter(Boolean);
    return <article className="portfolio-category-project" key={project.id}>
     <div className="portfolio-category-project-heading"><div><span className="mono orange">{project.year} / {project.category}</span><h2>{project.name}</h2></div><p className="preline">{project.description}</p></div>
-    {videos.length?<div className="portfolio-category-videos">{videos.map((video,index)=><VideoPlayer key={index} src={video} title={project.name+' — vídeo '+(index+1)} poster={project.image||undefined}/>)}</div>:<div className="project-video-placeholder mono">VÍDEO EM CURADORIA</div>}
+    {videos.length?<div className="portfolio-category-videos">{videos.map((video,index)=><VideoPlayer key={index} src={video} title={project.name+' — vídeo '+(index+1)}/>)}</div>:<div className="project-video-placeholder mono">VÍDEO EM CURADORIA</div>}
    </article>;
   })}</div>:<p className="portfolio-category-empty">Ainda não há projetos nesta sessão.</p>}
  </main><Footer/><ScrollMotion/></PortfolioProvider>;
