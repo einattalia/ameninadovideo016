@@ -3,7 +3,6 @@ import Link from 'next/link';
 import {useEffect,useRef,useState} from 'react';
 import {motion,useReducedMotion} from 'framer-motion';
 import {Menu,Play} from 'lucide-react';
-import {workCollections} from '@/lib/portfolio';
 import {usePortfolio} from '@/components/portfolio-context';
 import {VideoPlayer,VideoPreview} from '@/components/video-player';
 
@@ -15,21 +14,19 @@ export function Hero(){const {settings}=usePortfolio();const reduced=useReducedM
 
 export function Works(){
  const {projects}=usePortfolio();
- const categoryPaths:Record<string,string>={'MÚSICA':'musica','EVENTOS':'eventos','DIVULGAÇÃO':'divulgacao'};
  return <section id="trabalhos" className="section cinematic-portfolio">
-  <div className="section-meta mono"><span><i>02</i> / FILMES EM CENA</span><span>ESCOLHA UMA PASTA</span></div>
-  <div className="heading-row cinematic-heading"><div><p className="mono orange">SELEÇÃO AMDV-016</p><h2>HISTÓRIAS<br/>EM MOVIMENTO<span className="orange">.</span></h2></div><p>Entre em uma seção e descubra os meus principais projetos.</p></div>
-  <div className="portfolio-folds">
-   {workCollections.map((category,index)=>{
-    const categoryProjects=projects.filter(project=>project.tags.includes(category));
-    const featuredProject=categoryProjects.find(project=>[project.video,...project.videos].some(video=>video&&project.featuredVideos.includes(video)));
-    const previewVideo=featuredProject?[featuredProject.video,...featuredProject.videos].find(video=>video&&featuredProject.featuredVideos.includes(video)):undefined;
-    return <Link key={category} href={'/trabalhos/'+categoryPaths[category]} className="portfolio-fold-card">
-     <div className="portfolio-fold-media">{previewVideo?<VideoPreview src={previewVideo} title={'Prévia de '+category} />:<div className="portfolio-fold-empty"><span className="mono">VÍDEO EM CURADORIA</span></div>}<span className="portfolio-fold-index mono">0{index+1} / SESSÃO</span></div>
-     <div className="portfolio-fold-copy"><div><span className="mono orange">{String(categoryProjects.length).padStart(2,'0')} PROJETOS</span><h3>{category}</h3></div><span className="mono">ABRIR PASTA ↗</span></div>
+  <div className="section-meta mono"><span><i>02</i> / FILMES EM CENA</span><span>{String(projects.length).padStart(2,'0')} TRABALHOS</span></div>
+  <div className="heading-row cinematic-heading"><div><p className="mono orange">SELEÇÃO AMDV-016</p><h2>HISTÓRIAS<br/>EM MOVIMENTO<span className="orange">.</span></h2></div><p>Conheça os trabalhos, cada um com seu próprio espaço.</p></div>
+  {projects.length?<div className="portfolio-folds">
+   {projects.map((project,index)=>{
+    const videos=[project.video,...project.videos].filter(Boolean);
+    const previewVideo=videos.find(video=>project.featuredVideos.includes(video))||videos[0];
+    return <Link key={project.id} href={'/projetos/'+project.slug} className="portfolio-fold-card">
+     <div className="portfolio-fold-media">{previewVideo?<VideoPreview src={previewVideo} title={'Prévia de '+project.name}/>:<div className="portfolio-fold-empty"><span className="mono">VÍDEO EM CURADORIA</span></div>}<span className="portfolio-fold-index mono">{project.demo?'ESTUDO VISUAL':project.year}</span></div>
+     <div className="portfolio-fold-copy"><div><span className="mono orange">{String(videos.length).padStart(2,'0')} {videos.length===1?'VÍDEO':'VÍDEOS'}</span><h3>{project.name}</h3></div><span className="mono">VER TRABALHO ↗</span></div>
     </Link>;
    })}
-  </div>
+  </div>:<p className="portfolio-category-empty">Ainda não há trabalhos visíveis.</p>}
  </section>;
 }
 
