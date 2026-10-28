@@ -236,3 +236,29 @@
 .portfolio-video-preview-wrap>.portfolio-video-preview{position:absolute;inset:0;width:100%;height:100%}
 .portfolio-preview-poster{position:absolute;z-index:1;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 @media(max-width:600px){.portfolio-embed-cover span{width:54px;height:54px}}
+
+.feedback-page{min-height:100vh;background:#0d0d0d;color:#f1efeb;padding:42px 6vw 30px;display:flex;flex-direction:column}
+.feedback-brand{max-width:900px;width:100%;margin:0 auto}
+.feedback-brand .brand{display:inline-block;color:#f1efeb}
+.feedback-brand .brand>span>span{color:#d96b40}
+.feedback-card{width:min(100%,760px);margin:clamp(70px,12vh,140px) auto 60px}
+.feedback-card h1{font-size:clamp(42px,8vw,92px);line-height:1;letter-spacing:-.065em;margin:16px 0 24px}
+.feedback-card h1 em{font-family:Georgia,serif;font-weight:400}
+.feedback-intro{max-width:560px;color:#bdb8b2;line-height:1.7;margin-bottom:36px}
+.feedback-form{display:grid;gap:22px}
+.feedback-form>label:not(.feedback-consent){display:grid;gap:10px;font-size:14px}
+.feedback-form input[type=text],.feedback-form textarea{width:100%;background:#131313;border:1px solid #414141;border-radius:4px;color:#f1efeb;padding:14px 15px;font:inherit;outline:none}
+.feedback-form input[type=text]:focus,.feedback-form textarea:focus{border-color:#d96b40}
+.feedback-form textarea{resize:vertical;min-height:150px}
+.feedback-consent{display:flex;align-items:flex-start;gap:12px;color:#bdb8b2;font-size:13px;line-height:1.5}
+.feedback-consent input{accent-color:#d96b40;margin-top:3px}
+.feedback-form button{justify-self:start;background:#bb502b;border:0;border-radius:4px;padding:14px 22px;color:white;font:inherit;cursor:pointer}
+.feedback-form button:disabled{opacity:.6;cursor:wait}
+.feedback-error{color:#ff9b83}
+.feedback-success{border:1px solid #414141;background:#131313;padding:28px;border-radius:5px}
+.feedback-success h2{font-size:clamp(28px,5vw,48px);margin:12px 0}
+.feedback-success p{color:#bdb8b2;line-height:1.6}
+.feedback-honeypot{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
+.feedback-back{width:min(100%,760px);margin:0 auto;color:#bdb8b2}
+.admin-feedback-link{color:#999;margin-top:16px}
+@media(max-width:600px){.feedback-page{padding:28px 22px}.feedback-card{margin-top:65px}.feedback-card h1{font-size:clamp(40px,12vw,64px)}}

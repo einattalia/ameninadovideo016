@@ -11,7 +11,7 @@ export const socialClientSchema = z.object({
  id:text(100).min(1),name:text(150),handle:text(100),url:mediaUrl,image:mediaUrl.default(''),imageAlt:text(300).default(''),description:text(2000).default(''),website:z.string().trim().max(500).refine(v=>!v||(()=>{try{const u=new URL(v);return ['http:','https:'].includes(u.protocol)&&!u.username&&!u.password;}catch{return false;}})(),'Informe um link de site válido.').default(''),published:z.boolean().default(false)
 }).superRefine((client,c)=>{if(client.published&&!client.name&&!client.handle)c.addIssue({code:'custom',path:['name'],message:'Informe o nome ou o perfil do cliente antes de mostrar no portfólio.'});});
 export const socialTestimonialSchema = z.object({
- id:text(100).min(1),client:text(150),quote:text(2000),published:z.boolean().default(false)
+ id:text(100).min(1),client:text(150),quote:text(2000),consent:z.boolean().default(false),published:z.boolean().default(false)
 }).superRefine((testimonial,c)=>{if(testimonial.published&&!testimonial.client)c.addIssue({code:'custom',path:['client'],message:'Informe o nome do cliente antes de publicar o feedback.'});if(testimonial.published&&!testimonial.quote)c.addIssue({code:'custom',path:['quote'],message:'Adicione o feedback antes de publicar.'});});
 export const settingsSchema = z.object({
  heroImage:mediaUrl, heroAlt:text(), heroQuote:text(500), heroDemo:z.boolean(),
@@ -21,7 +21,7 @@ export const settingsSchema = z.object({
  socialManagementTitle:text(150).default('Gestão de redes sociais'),socialManagementDescription:text(1800).default('Cuidamos da presença da sua marca nas redes durante todo o período de gestão. Planejamos os conteúdos, organizamos o calendário, fazemos as postagens e acompanhamos os resultados para orientar os próximos passos.'),
  socialTeamName:text(100).default('Bruna Linhares'),socialTeamRole:text(100).default('Designer'),socialTeamBio:text(500).default('Designer que integra a equipe da AMDV-016.'),socialTeamImage:mediaUrl.default(''),socialTeamImageAlt:text(300).default(''),
  socialClients:z.array(socialClientSchema).max(20).default([{id:'cervejando-com-diego',name:'Cervejando com Diego',handle:'@cervejandocomdiego',url:'https://www.instagram.com/cervejandocomdiego/',image:'',imageAlt:'',description:'',website:'',published:true}]),
- socialTestimonials:z.array(socialTestimonialSchema).max(20).default([]),
+ socialTestimonials:z.array(socialTestimonialSchema).max(100).default([]),
  clients:z.array(text(150).min(1)).max(40), socialItems:z.array(z.object({image:mediaUrl.refine(v=>!!v,'Adicione uma imagem à publicação.'),url:mediaUrl,alt:text(300)})).max(6)
 });
 export const contentSchema = z.object({settings:settingsSchema,projects:z.array(projectSchema).max(100)}).superRefine((d,c)=>{const slugs=new Set<string>();const ids=new Set<string>();d.projects.forEach((p,i)=>{if(slugs.has(p.slug))c.addIssue({code:'custom',path:['projects',i,'slug'],message:'Este endereço já está em uso em outro projeto.'});if(ids.has(p.id))c.addIssue({code:'custom',path:['projects',i,'id'],message:'Projeto duplicado.'});slugs.add(p.slug);ids.add(p.id);});});
