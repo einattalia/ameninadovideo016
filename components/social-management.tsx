@@ -1,17 +1,19 @@
 'use client';
 
+import {motion,useReducedMotion} from 'framer-motion';
 import {usePortfolio} from '@/components/portfolio-context';
 import {Dialog,DialogContent,DialogDescription,DialogHeader,DialogTitle,DialogTrigger} from '@/components/ui/dialog';
 
 const managementSteps = [
-  {number:'01',title:'Planejamento',description:'Definimos os temas e objetivos da comunicação.'},
-  {number:'02',title:'Organização',description:'Estruturamos o calendário e a rotina de conteúdo.'},
-  {number:'03',title:'Postagens',description:'Cuidamos da publicação dos conteúdos nas redes.'},
-  {number:'04',title:'Análise',description:'Acompanhamos os resultados durante a gestão.'},
+  {number:'01',title:'Planejamento',description:'Definimos objetivos, temas e formatos para cada rede.'},
+  {number:'02',title:'Organização',description:'Montamos o calendário e alinhamos prazos e materiais.'},
+  {number:'03',title:'Publicação',description:'Preparamos, revisamos e publicamos os conteúdos.'},
+  {number:'04',title:'Acompanhamento',description:'Observamos os resultados e ajustamos o planejamento.'},
 ];
 
 export function SocialManagement(){
   const {settings}=usePortfolio();
+  const reducedMotion=useReducedMotion();
   const clients=settings.socialClients.filter(client=>client.published);
   const testimonials=settings.socialTestimonials.filter(testimonial=>testimonial.published);
   const initials=settings.socialTeamName.split(/\s+/).filter(Boolean).slice(0,2).map(name=>name[0]).join('').toUpperCase();
@@ -27,11 +29,11 @@ export function SocialManagement(){
       <p className="preline">{settings.socialManagementDescription}</p>
     </div>
     <div className="management-steps">
-      {managementSteps.map(step=><article className="management-step" key={step.number}>
+      {managementSteps.map((step,index)=><motion.article className="management-step" key={step.number} initial={reducedMotion?false:{opacity:0,y:10}} whileInView={reducedMotion?undefined:{opacity:1,y:0}} viewport={{once:true,amount:.25}} transition={{duration:.45,delay:index*.08,ease:'easeOut'}}>
         <span className="mono orange">{step.number}</span>
         <h3>{step.title}</h3>
         <p>{step.description}</p>
-      </article>)}
+      </motion.article>)}
     </div>
     <div className="management-people">
       <article className="management-team">

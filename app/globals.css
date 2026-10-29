@@ -264,3 +264,17 @@
 @media(max-width:600px){.feedback-page{padding:28px 22px}.feedback-card{margin-top:65px}.feedback-card h1{font-size:clamp(40px,12vw,64px)}}
 
 .social-follow{display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid #393939;padding-top:24px;margin-top:50px}.social-follow p{font-size:11px;color:#999;letter-spacing:.08em}.social-follow-link{display:inline-flex;align-items:center;gap:18px;color:#f1efeb;border-bottom:1px solid #d96b40;padding:0 0 8px;font-size:clamp(16px,2vw,22px)}.social-follow-link span{color:#d96b40;font-size:1.3em}@media(max-width:600px){.social-follow{align-items:flex-start;flex-direction:column;gap:16px;margin-top:34px}}
+
+/* Social management process cards: warm paper treatment within the existing section. */
+.social-management .management-steps{gap:14px;border:0}
+.social-management .management-step{min-height:190px;padding:23px 20px;background:#ebe4d9;color:#181715;border:0}
+.social-management .management-step:first-child{padding-left:20px}
+.social-management .management-step:last-child{border-right:0}
+.social-management .management-step h3{margin:32px 0 10px;color:#181715}
+.social-management .management-step p{color:#504b45}
+@media(max-width:650px){
+ .social-management .management-steps{gap:10px}
+ .social-management .management-step{min-height:170px;padding:18px 15px}
+ .social-management .management-step:first-child{padding-left:15px}
+ .social-management .management-step h3{margin:24px 0 9px}
+}
